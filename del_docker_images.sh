@@ -18,7 +18,7 @@ for value in "${imageArr[@]}"; do
       printf "\n\n"
       echo "deleting ${id}"
       printf "\n\nexecuting docker rmi command\n\n"
-      r=$(docker rmi "${id}")
+      r=$(docker rmi "${id}" 2>&1)
       printf "\n\nexecuted\n\n"
       echo "result from docker rmi: ${r}"
       printf "\n\n"
