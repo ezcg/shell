@@ -9,7 +9,7 @@ i=0
 
 for value in "${imageArr[@]}"; do
   ((i++))
-  if [ $i -ge 2 ]; then
+  if [ $i -ge 1 ]; then
     echo "$i $value"
     id=$(echo "$value" | awk '{print $3}')
     printf "\n"
