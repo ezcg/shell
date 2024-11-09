@@ -17,14 +17,15 @@ for value in "${imageArr[@]}"; do
     if [ "$remove" = "y" ]; then
       printf "\n\n"
       echo "deleting ${id}"
-      printf "\n\n"
-      r=$(docker rmi ${id})
+      printf "\n\nexecuting docker rmi command\n\n"
+      r=$(docker rmi "${id}")
+      printf "\n\nexecuted\n\n"
       echo "result from docker rmi: ${r}"
       printf "\n\n"
-      if [[ "$r" == *"stopped container"* ]]; then
+      if [[ "${r}" == *"stopped container"* ]]; then
         read -p "Delete the stopped container [y/N]: " delete
-        if [ "$delete" = "y" ]; then
-          cid=$(echo "$r" | grep -o "stopped container [[:alnum:]]*" | awk '{print $3}')
+        if [ "${delete}" = "y" ]; then
+          cid=$(echo "${r}" | grep -o "stopped container [[:alnum:]]*" | awk '{print $3}')
           printf "\n\n"
           echo "Deleting stopped container ${cid}"
           printf "\n\n"
