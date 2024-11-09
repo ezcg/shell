@@ -34,9 +34,11 @@ for value in "${imageArr[@]}"; do
           echo "Trying to delete ${id} again"
           printf "\n\n"
           docker rmi "${id}"
+          printf "\n\n"
         fi
       else
         echo "Did not find the string: 'stopped container' in ${r}"
+        printf "\n\n"
       fi
     fi
   fi
