@@ -15,9 +15,11 @@ for value in "${imageArr[@]}"; do
     printf "\n"
     read -p "Delete [y/N]: " remove
     if [ "$remove" = "y" ]; then
-      printf "\n\ndeleting $id"
+      printf "\n\n"
+      echo "deleting ${id}"
+      printf "\n\n"
       r=$(docker rmi ${id})
-      echo "${r}"
+      echo "result from docker rmi: ${r}"
       printf "\n\n"
       if [[ "$r" == *"stopped container"* ]]; then
         read -p "Delete the stopped container [y/N]: " delete
