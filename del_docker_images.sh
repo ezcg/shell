@@ -1,18 +1,17 @@
 #!/bin/bash
 
-imageStr=$(docker images)
-readarray -t imageArr <<<"$imageStr"
+# Get a formatted list of docker images
+imageStr=$(docker images --format "{{.Repository}} {{.Tag}} {{.ID}}")
 
+# Read the images into an array
+readarray -t imageArr <<<"$imageStr"
 i=0
-default="n"
-for value in "${imageArr[@]}"
-do
+
+for value in "${imageArr[@]}"; do
   ((i++))
   if [ $i -ge 2 ]; then
     echo "$i $value"
-#    id=$(echo "$value" | awk '{print $1}'
     id=$(echo "$value" | awk '{print $3}')
-
     printf "\n"
     read -p "Delete [y/N]: " remove
     if [ "$remove" = "y" ]; then
@@ -20,10 +19,10 @@ do
       r=$(docker rmi ${id})
       echo "${r}"
       printf "\n\n"
-      if [[ $r == *"stopped container"* ]]; then
+      if [[ "$r" == *"stopped container"* ]]; then
         read -p "Delete the stopped container [y/N]: " delete
         if [ "$delete" = "y" ]; then
-          cid=$(echo "$r" | grep -o "stopped container .*$")
+          cid=$(echo "$r" | grep -o "stopped container [[:alnum:]]*" | awk '{print $3}')
           printf "\n\n"
           echo "Deleting stopped container ${cid}"
           printf "\n\n"
@@ -33,8 +32,9 @@ do
           printf "\n\n"
           docker rmi "${id}"
         fi
+      else
+        echo "Did not find the string: 'stopped container' in ${r}"
       fi
-
     fi
   fi
 done
